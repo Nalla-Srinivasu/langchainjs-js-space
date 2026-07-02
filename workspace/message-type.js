@@ -9,10 +9,10 @@ const model = new ChatOpenAI({
 });
 
 const message = [
-    new SystemMessage("You are a helpful AI Assistant, How tech of senior engineert explains simply"),
+    new SystemMessage("You are a helpful AI Assistant, How does a senior engineer explain things simply?"),
     new HumanMessage("Explain Quantum computing to a 10 yr old?")
 ];
 
 const response = await model.invoke(message);
-console.log(" AI resopnse: \n");
+console.log(" AI response: \n");
 console.log(response.content);
