@@ -18,23 +18,31 @@ const mcpClient = new MultiServerMCPClient({
     }
 })
 
-const model =  new ChatOpenAI({
-    model:process.env.AI_MODEL,
-    configuration:{baseURL:process.env.AI_ENDPOINT},
-    apiKey:process.env.AI_API_KEY
-})
-// console.log(serverPath);
-// process.exit(1);
-const tools = await mcpClient.getTools();
-const agent = await new createAgent({
-    model,
-    tools
-})
+try{
 
-const query = "What is the value of cos theta + sin theta?"
+    const model =  new ChatOpenAI({
+        model:process.env.AI_MODEL,
+        configuration:{baseURL:process.env.AI_ENDPOINT},
+        apiKey:process.env.AI_API_KEY
+    })
+    // console.log(serverPath);
+    // process.exit(1);
+    const tools = await mcpClient.getTools();
+    const agent = await new createAgent({
+        model,
+        tools
+    })
 
-const response = await agent.invoke({messages: new HumanMessage(query)})
-const lastMessage = response.messages[response.messages.length - 1];
+    const query = "What is the value of 25*30?"
 
-console.log("\n query", query);
-console.log("\n agent respones", lastMessage.content)
+    const response = await agent.invoke({messages: new HumanMessage(query)})
+    const lastMessage = response.messages[response.messages.length - 1];
+
+    console.log("\n query", query);
+    console.log("\n agent respones", lastMessage.content)
+}catch(error){
+    console.error("error connecting to local mcp server:", error)
+}finally{
+    await mcpClient.close();
+    console.log("\n mcp client connection closed")
+}
