@@ -23,7 +23,7 @@ const searchResult = await qdrant_client.query("documents",{
 
 const context = searchResult.points.map(point => point.payload.text).join("\n\n")
 
-// console.log("context", context)
+console.log("Qdrant Pyload context : ", context)
 // process.exit(0);
 
 const llm = new ChatOpenAI({
@@ -58,9 +58,10 @@ If the context does not contain enough information to answer the question, respo
 ])
 
 const finalPrompt = await prompt.invoke({context,question})
+console.log("\n final prompt : ", finalPrompt.messages)
 // console.dir(finalPrompt.messages, { depth: null });
 // process.exit(0);
 const response = await llm.invoke(finalPrompt)
 
-console.log("response", response.content)
+console.log("\n AI response : ", response.content)
 // console.dir(response, { depth: null });
